@@ -37,7 +37,14 @@ jobs:
           mkdir public
           cp index.html stock.json public/
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+            - uses: actions/upload-pages-artifact@v3
         with:
+          name: github-pages
           path: public
-      - uses: actions/deploy-pages@v4
+          retention-days: 1
+
+      - name: Deploy website
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages
+
