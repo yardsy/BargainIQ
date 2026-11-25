@@ -49,7 +49,7 @@ jobs:
       - name: Prepare website
         run: |
           mkdir -p public
-          cp index.html stock.json public/
+          cp index.html account.html stock.json public/
           for f in retail.json history.json; do
             if [ -f "$f" ]; then cp "$f" public/; fi
           done
