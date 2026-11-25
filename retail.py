@@ -20,7 +20,16 @@ def parse(row):
  if not math.isfinite(p) or p<=0: raise ValueError('Invalid price')
  c=norm(row['condition'])
  if c not in ('new','used','refurbished','exdisplay'): raise ValueError('Unknown condition')
- return dict(row,price=p,condition=c,gtin=gtin(row.get('gtin','')))
+ image=(row.get('image_url') or '').strip()
+ if image:
+  i=urlsplit(image)
+  if i.scheme!='https' or not i.hostname or i.username or i.password: raise ValueError('Invalid image URL')
+ shipping=(row.get('shipping') or '').strip()
+ if shipping:
+  shipping=float(shipping)
+  if not math.isfinite(shipping) or shipping<0: raise ValueError('Invalid shipping')
+ else: shipping=None
+ return dict(row,price=p,condition=c,gtin=gtin(row.get('gtin','')),image_url=image,shipping=shipping)
 
 def match_key(r):
  # Never match different conditions, packs or configurations.
