@@ -152,6 +152,7 @@ def main():
         verified=dict(offer,id=deal_id)
         saved=[]
         targets=[]
+        account_searches=[]
         headers={"access-control-allow-origin":"*","access-control-allow-methods":"GET,POST,DELETE,OPTIONS","access-control-allow-headers":"apikey,authorization,content-type,prefer"}
         def mock_account(route):
             request=route.request
@@ -167,6 +168,12 @@ def main():
                 if request.method=="POST":
                     saved.append(dict(request.post_data_json,id="test-watch"))
                 result=saved
+            elif "/saved_searches" in url:
+                if request.method=="POST":
+                    account_searches.append(dict(request.post_data_json,id="test-search"))
+                elif request.method=="DELETE":
+                    account_searches.clear()
+                result=account_searches
             elif "/price_alerts" in url:
                 if request.method=="POST":
                     targets.append(dict(request.post_data_json,id="test-target"))
@@ -190,6 +197,28 @@ def main():
         page.locator("#targetForm button").click()
         expect(page.locator("#targetItems")).to_contain_text("Target reached")
         assert len(saved)==1 and len(targets)==1
+        page.evaluate("""localStorage.setItem('bargainiq-saved-searches-v1',JSON.stringify([{name:'Account lamp',fields:{search:'Test lamp',specBudget:'115',specBasis:'delivered',retailCategory:'Lighting'},clearance:false}]))""")
+        page.locator('[data-view="searchPanel"]').click()
+        expect(page.locator("#accountSearches")).to_contain_text("No account shopping requests")
+        page.locator("#syncSearches").click()
+        expect(page.locator("#accountSearches")).to_contain_text("Account lamp")
+        assert len(account_searches)==1
+        page.locator("#syncSearches").click()
+        expect(page.locator("#status")).to_contain_text("0 shopping requests imported")
+        href=page.locator("#accountSearches a").get_attribute("href")
+        second_device=browser.new_page(viewport={"width":390,"height":844})
+        second_device.route("**/rest/v1/public_deals?*",lambda route:route.fulfill(json=[offer,expired],headers={"access-control-allow-origin":"*"}))
+        second_device.route("**/retail.json",lambda route:route.fulfill(json=dict(products=[retail,second,third],matches=[[retail,second]])))
+        second_device.goto("http://127.0.0.1:8765/"+href)
+        expect(second_device.locator("#specBudget")).to_have_value("115")
+        expect(second_device.locator("#retailCategory")).to_have_value("Lighting")
+        expect(second_device.locator("#retailResults article")).to_have_count(1)
+        expect(second_device.locator("#retailResults article")).to_contain_text("Retailer B")
+        assert "#shopping=" not in second_device.url
+        second_device.close()
+        page.locator("#accountSearches button").filter(has_text="Remove").click()
+        expect(page.locator("#accountSearches")).to_contain_text("No account shopping requests")
+        assert not account_searches
         page.unroute("**/rest/v1/**",mock_account)
         page.unroute("**/auth/v1/token?*",mock_account)
         page.goto("http://127.0.0.1:8765/index.html")
