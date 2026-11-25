@@ -1,0 +1,28 @@
+name: Validate BargainIQ
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m unittest -v
+      - name: Check browser script syntax
+        run: |
+          python - <<'PY'
+          import re, pathlib, subprocess, tempfile
+          html=pathlib.Path('index.html').read_text()
+          scripts=re.findall(r'<script>(.*?)</script>',html,re.S)
+          assert scripts
+          with tempfile.TemporaryDirectory() as folder:
+              for i, script in enumerate(scripts):
+                  p=pathlib.Path(folder)/f'{i}.js'
+                  p.write_text(script)
+                  subprocess.run(['node','--check',str(p)],check=True)
+          PY
