@@ -1,5 +1,8 @@
 name: Validate BargainIQ
 on:
+  workflow_dispatch:
+  push:
+    branches: [v11-account-searches, v12-feed-automation]
   pull_request:
     branches: [main]
 permissions:
