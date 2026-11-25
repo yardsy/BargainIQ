@@ -52,3 +52,11 @@ class RetailTests(unittest.TestCase):
   with self.assertRaises(ValueError):record_history([self.row(price='120'),self.row(price='90')],{})
  def test_history_missing_identity(self):
   self.assertEqual(record_history([self.row(variant='')],{}),{})
+
+ def test_dimensions(self):
+  self.assertEqual(self.row(width_cm='50.5')['width_cm'],50.5)
+  self.assertIsNone(self.row()['depth_cm'])
+  for value in ('nan','inf','0','-1'):
+   with self.assertRaises(ValueError):self.row(width_cm=value)
+ def test_invalid_observation_date(self):
+  with self.assertRaises(ValueError):self.row(observed_at='not-a-date')
