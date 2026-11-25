@@ -53,6 +53,7 @@ def main():
         page.locator("#recover button").click()
         expect(page.locator("#status")).to_contain_text("password reset link")
         assert any(method=="POST" and "/recover?" in url for method,url,_ in requests)
+        page.goto("about:blank")
         page.goto("http://127.0.0.1:8765/account.html#access_token=synthetic-test-token&type=recovery")
         expect(page.locator("#resetPanel")).to_be_visible()
         expect(page.locator("#private")).to_be_hidden()
