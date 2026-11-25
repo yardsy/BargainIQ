@@ -19,3 +19,14 @@ class RetailTests(unittest.TestCase):
   self.assertIsNone(gtin('4006381333932'))
  def test_profit(self):
   self.assertEqual(profit(100,150,10,5),30)
+
+ def test_delivery(self):
+  self.assertIsNone(self.row()['shipping'])
+  self.assertEqual(self.row(shipping='0')['shipping'],0)
+  self.assertEqual(self.row(shipping='12.50')['shipping'],12.5)
+  for value in ('nan','inf','-1'):
+   with self.assertRaises(ValueError):self.row(shipping=value)
+ def test_image(self):
+  self.assertEqual(self.row(image_url='https://example.com/image.png')['image_url'],'https://example.com/image.png')
+  for value in ('http://example.com/a','javascript:alert(1)','https://user:pass@example.com/a'):
+   with self.assertRaises(ValueError):self.row(image_url=value)

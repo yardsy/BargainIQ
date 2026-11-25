@@ -12,7 +12,22 @@ def main():
         errors=[]
         page.on("pageerror",lambda error: errors.append(str(error)))
         page.route("**/rest/v1/public_deals?*",lambda route:route.fulfill(json=[offer,expired],headers={"access-control-allow-origin":"*"}))
+        retail=dict(name="Test lamp",retailer="Retailer A",url="https://example.invalid/lamp",price=100,shipping=20,condition="new",observed_at=now.isoformat(),currency="AUD",category="Lighting",brand="Example",mpn="L1",image_url="")
+        second=dict(retail,retailer="Retailer B",url="https://example.invalid/lamp-b",price=110,shipping=0)
+        third=dict(retail,name="Test chair",category="Furniture",url="https://example.invalid/chair",shipping=None,price=90)
+        page.route("**/retail.json",lambda route:route.fulfill(json=dict(products=[retail,second,third],matches=[[retail,second]])))
         page.goto("http://127.0.0.1:8765/index.html")
+        expect(page.locator("#retailResults")).to_contain_text("Test lamp")
+        page.locator("#retailCategory").select_option("Lighting")
+        expect(page.locator("#retailResults article")).to_have_count(2)
+        page.locator("#retailSort").select_option("delivered")
+        expect(page.locator("#retailResults article").first).to_contain_text("Retailer B")
+        page.locator("#retailCategory").select_option("")
+        expect(page.locator("#retailResults")).to_contain_text("Delivery not supplied")
+        page.evaluate("window.recordRecent({title:'Test lamp',retailer:'Retailer A',url:'https://example.invalid/lamp'})")
+        expect(page.locator("#recentGrid")).to_contain_text("Test lamp")
+        page.locator("#clearRecent").click()
+        expect(page.locator("#recentPanel")).to_be_hidden()
         expect(page.locator("#publicGrid")).to_contain_text("Browser test chair")
         expect(page.locator("#publicGrid")).not_to_contain_text("Expired test item")
         expect(page.locator("#showExamples")).not_to_be_checked()
@@ -48,6 +63,13 @@ def main():
         page.goto("http://127.0.0.1:8765/index.html?view=same")
         expect(page.locator("#viewTitle")).to_have_text("Compare")
         expect(page.locator("#retailPanel")).to_be_visible()
+        expect(page.locator(".compareTable")).to_contain_text("Retailer A")
+        expect(page.locator(".compareTable")).to_contain_text("$120.00")
+        expect(page.locator(".compareTable")).to_contain_text("$110.00")
+        page.goto("http://127.0.0.1:8765/index.html?deal=test-only")
+        expect(page.locator("#offer-test-only")).to_be_visible()
+        page.goto("http://127.0.0.1:8765/index.html?deal=expired")
+        expect(page.locator("#publicStatus")).to_contain_text("unavailable or has expired")
         page.goto("http://127.0.0.1:8765/account.html")
         expect(page.locator("#auth")).to_be_visible()
         expect(page.locator("#private")).to_be_hidden()
@@ -84,6 +106,52 @@ def main():
         expect(page.locator("#auth")).to_be_visible()
         expect(page.locator("#resetPanel")).to_be_hidden()
         assert any(method=="PUT" and url.endswith("/user") for method,url,_ in requests)
+        # Signed-in account flows with synthetic API data only.
+        uid="11111111-1111-4111-8111-111111111111"
+        deal_id="22222222-2222-4222-8222-222222222222"
+        verified=dict(offer,id=deal_id)
+        saved=[]
+        targets=[]
+        headers={"access-control-allow-origin":"*","access-control-allow-methods":"GET,POST,DELETE,OPTIONS","access-control-allow-headers":"apikey,authorization,content-type,prefer"}
+        def mock_account(route):
+            request=route.request
+            if request.method=="OPTIONS":
+                route.fulfill(status=204,headers=headers)
+                return
+            url=request.url
+            if "/auth/v1/token" in url:
+                result={"access_token":"test-token","user":{"id":uid}}
+            elif "/public_deals?" in url:
+                result=[verified]
+            elif "/watchlists" in url:
+                if request.method=="POST":
+                    saved.append(dict(request.post_data_json,id="test-watch"))
+                result=saved
+            elif "/price_alerts" in url:
+                if request.method=="POST":
+                    targets.append(dict(request.post_data_json,id="test-target"))
+                result=targets
+            else:
+                result=[]
+            route.fulfill(json=result,headers=headers)
+        page.route("**/auth/v1/token?*",mock_account)
+        page.route("**/rest/v1/**",mock_account)
+        page.goto("http://127.0.0.1:8765/account.html?save="+deal_id)
+        page.locator("#auth [name=email]").fill("test@example.invalid")
+        page.locator("#auth [name=password]").fill("Test-password-123")
+        page.locator("#auth button[value=login]").click()
+        expect(page.locator("#pendingSaveTitle")).to_contain_text("Browser test chair")
+        page.locator("#confirmSave").click()
+        expect(page.locator("#items")).to_contain_text("Browser test chair")
+        expect(page.locator("#items")).to_contain_text("$99.95")
+        page.locator("#items button").filter(has_text="Set price target").click()
+        expect(page.locator("#alertsPanel")).to_be_visible()
+        page.locator("#targetForm [name=target_price]").fill("100")
+        page.locator("#targetForm button").click()
+        expect(page.locator("#targetItems")).to_contain_text("Target reached")
+        assert len(saved)==1 and len(targets)==1
+        page.unroute("**/rest/v1/**",mock_account)
+        page.unroute("**/auth/v1/token?*",mock_account)
         page.goto("http://127.0.0.1:8765/index.html")
         expect(page.locator("#ad-top")).to_be_hidden()
         expect(page.locator("#ad-secondary")).to_be_hidden()

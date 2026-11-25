@@ -1,1 +1,1 @@
-retailer,name,url,price,observed_at,condition,currency,brand,mpn,gtin,pack,variant,category,clearance\n
+retailer,name,url,price,observed_at,condition,currency,brand,mpn,gtin,pack,variant,category,clearance\n,image_url,shipping,width_cm,depth_cm,height_cm
