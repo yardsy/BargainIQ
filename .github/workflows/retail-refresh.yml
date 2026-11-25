@@ -1,0 +1,28 @@
+name: Validate retailer refresh
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+permissions:
+  contents: read
+concurrency:
+  group: retail-refresh-preview
+  cancel-in-progress: false
+jobs:
+  preview:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Validate importer
+        run: python -m unittest test_retail test_retail_batch -v
+      - name: Preview approved inventory
+        run: |
+          if [ ! -f approved-feeds.json ]; then
+            echo "No approved feeds configured. Nothing fetched or published."
+            exit 0
+          fi
+          python retail_batch.py approved-feeds.json --input-dir approved-feeds
