@@ -1,5 +1,5 @@
 import unittest
-from retail import parse,groups,profit,gtin
+from retail import parse,groups,profit,gtin,record_history,price_context
 class RetailTests(unittest.TestCase):
  def row(self,**kw):
   r=dict(retailer='A',name='Test item',url='https://example.com/item',price='100',observed_at='2026-11-25',condition='new',currency='AUD',brand='Brand',mpn='ABC',pack='1',variant='black')
@@ -30,3 +30,25 @@ class RetailTests(unittest.TestCase):
   self.assertEqual(self.row(image_url='https://example.com/image.png')['image_url'],'https://example.com/image.png')
   for value in ('http://example.com/a','javascript:alert(1)','https://user:pass@example.com/a'):
    with self.assertRaises(ValueError):self.row(image_url=value)
+
+ def test_history(self):
+  a=self.row(price='120',observed_at='2026-11-20')
+  b=self.row(price='90',observed_at='2026-11-25')
+  h=record_history([a,b],{})
+  c=price_context(b,h)
+  self.assertEqual(c['previous_price'],120)
+  self.assertEqual(c['lowest_observed'],90)
+  self.assertEqual(len(c['observations']),2)
+  self.assertEqual(record_history([b],h),h)
+  self.assertIsNone(price_context(a,h)['previous_price'])
+ def test_history_separation(self):
+  a=self.row(price='120')
+  b=self.row(price='90',variant='white')
+  c=self.row(price='80',retailer='B')
+  h=record_history([a,b,c],{})
+  self.assertEqual(len(h),3)
+  self.assertIsNone(price_context(b,h)['previous_price'])
+ def test_history_conflict(self):
+  with self.assertRaises(ValueError):record_history([self.row(price='120'),self.row(price='90')],{})
+ def test_history_missing_identity(self):
+  self.assertEqual(record_history([self.row(variant='')],{}),{})
