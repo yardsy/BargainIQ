@@ -51,8 +51,8 @@ jobs:
       - name: Prepare website
         run: |
           mkdir -p public
-          cp index.html account.html about.html stock.json commission-factory-237c1dd364344b708a80b3ce2251b3b7.html public/
-          for f in retail.json history.json; do
+          cp index.html stock.json commission-factory-237c1dd364344b708a80b3ce2251b3b7.html public/
+          for f in account.html about.html retail.json history.json; do
             if [ -f "$f" ]; then cp "$f" public/; fi
           done
 
