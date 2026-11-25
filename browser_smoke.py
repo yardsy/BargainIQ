@@ -37,6 +37,42 @@ def main():
         expect(page.locator("#auth")).to_be_visible()
         expect(page.locator("#private")).to_be_hidden()
         expect(page.locator("#adminPanel")).to_be_hidden()
+        expect(page.locator("#resetPanel")).to_be_hidden()
+        requests=[]
+        def auth_mock(route):
+            request=route.request
+            headers={"access-control-allow-origin":"*","access-control-allow-methods":"GET,POST,PUT,OPTIONS","access-control-allow-headers":"apikey,authorization,content-type"}
+            if request.method=="OPTIONS":
+                route.fulfill(status=204,headers=headers)
+                return
+            requests.append((request.method,request.url,request.post_data_json if request.post_data else None))
+            route.fulfill(status=200,json={},headers=headers)
+        page.route("**/auth/v1/**",auth_mock)
+        page.locator("summary").filter(has_text="Forgot your password?").click()
+        page.locator("#recover input").fill("test@example.invalid")
+        page.locator("#recover button").click()
+        expect(page.locator("#status")).to_contain_text("password reset link")
+        assert any(method=="POST" and "/recover?" in url for method,url,_ in requests)
+        page.goto("http://127.0.0.1:8765/account.html#access_token=synthetic-test-token&type=recovery")
+        expect(page.locator("#resetPanel")).to_be_visible()
+        expect(page.locator("#private")).to_be_hidden()
+        assert "access_token" not in page.url
+        page.locator("#resetPassword [name=password]").fill("Test-password-123")
+        page.locator("#resetPassword [name=confirm]").fill("Mismatch-password-123")
+        page.locator("#resetPassword button[type=submit], #resetPassword button:not([type])").first.click()
+        expect(page.locator("#status")).to_contain_text("Passwords do not match")
+        assert not any(method=="PUT" for method,_,_ in requests)
+        page.locator("#resetPassword [name=confirm]").fill("Test-password-123")
+        page.locator("#resetPassword button[type=submit], #resetPassword button:not([type])").first.click()
+        expect(page.locator("#status")).to_contain_text("Password updated")
+        expect(page.locator("#auth")).to_be_visible()
+        expect(page.locator("#resetPanel")).to_be_hidden()
+        assert any(method=="PUT" and url.endswith("/user") for method,url,_ in requests)
+        page.goto("http://127.0.0.1:8765/index.html")
+        expect(page.locator("#ad-top")).to_be_hidden()
+        expect(page.locator("#ad-secondary")).to_be_hidden()
+        page.locator('a[href="about.html"]').click()
+        expect(page.locator("h1")).to_have_text("About BargainIQ")
         assert not errors, errors
         browser.close()
     print("Browser smoke checks passed (mock feed, mobile viewport, navigation, calculator and signed-out account).")
