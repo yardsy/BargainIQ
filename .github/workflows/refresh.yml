@@ -1,6 +1,8 @@
 name: CarRadar stock refresh
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
   schedule:
     - cron: '17 */4 * * *'
@@ -49,7 +51,7 @@ jobs:
       - name: Prepare website
         run: |
           mkdir -p public
-          cp index.html stock.json public/
+          cp index.html stock.json commission-factory-237c1dd364344b708a80b3ce2251b3b7.html public/
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
