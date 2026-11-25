@@ -28,3 +28,17 @@ jobs:
                   p.write_text(script)
                   subprocess.run(['node','--check',str(p)],check=True)
           PY
+      - name: Install browser test dependencies
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Run isolated browser smoke checks
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 > /tmp/bargainiq-http.log 2>&1 &
+          server=$!
+          trap 'kill "$server" || true' EXIT
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8765/index.html >/dev/null; then break; fi
+            sleep 1
+          done
+          python browser_smoke.py
