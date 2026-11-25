@@ -50,6 +50,9 @@ jobs:
         run: |
           mkdir -p public
           cp index.html stock.json public/
+          for f in retail.json history.json; do
+            if [ -f "$f" ]; then cp "$f" public/; fi
+          done
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
