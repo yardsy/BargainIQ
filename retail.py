@@ -2,6 +2,8 @@
 import csv,json,re,math,argparse,hashlib
 from datetime import datetime,timezone
 from pathlib import Path
+from tempfile import NamedTemporaryFile
+import os
 from urllib.parse import urlsplit
 from collections import defaultdict
 
@@ -16,6 +18,7 @@ def parse(row):
  if any(not row.get(k) for k in required): raise ValueError('Missing required field')
  u=urlsplit(row['url'])
  if u.scheme!='https' or not u.hostname or u.username or u.password: raise ValueError('Invalid URL')
+ observation_time(row['observed_at'])
  if row.get('currency')!='AUD': raise ValueError('AUD required')
  p=float(row['price'])
  if not math.isfinite(p) or p<=0: raise ValueError('Invalid price')
@@ -30,7 +33,15 @@ def parse(row):
   shipping=float(shipping)
   if not math.isfinite(shipping) or shipping<0: raise ValueError('Invalid shipping')
  else: shipping=None
- return dict(row,price=p,condition=c,gtin=gtin(row.get('gtin','')),image_url=image,shipping=shipping)
+ dimensions={}
+ for field in ('width_cm','depth_cm','height_cm'):
+  value=str(row.get(field) or '').strip()
+  if value:
+   number=float(value)
+   if not math.isfinite(number) or number<=0:raise ValueError('Invalid dimension: '+field)
+   dimensions[field]=number
+  else:dimensions[field]=None
+ return dict(row,price=p,condition=c,gtin=gtin(row.get('gtin','')),image_url=image,shipping=shipping,**dimensions)
 
 def match_key(r):
  # Never match different conditions, packs or configurations.
@@ -93,6 +104,21 @@ def profit(buy,sell,fee,other):
  if not all(math.isfinite(x) and x>=0 for x in (buy,sell,fee,other)) or fee>100: raise ValueError('Invalid costs')
  return round(sell-buy-sell*fee/100-other,2)
 
+def write_json_atomic(path,data):
+ path=Path(path)
+ with NamedTemporaryFile(mode='w',encoding='utf-8',dir=path.parent,delete=False) as f:
+  name=f.name
+  try:
+   json.dump(data,f,indent=2,allow_nan=False)
+   f.flush()
+   os.fsync(f.fileno())
+  except Exception:
+   os.unlink(name)
+   raise
+ try:os.replace(name,path)
+ finally:
+  if os.path.exists(name):os.unlink(name)
+
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('csv');p.add_argument('--authorised',action='store_true');p.add_argument('--output',default='retail.json');p.add_argument('--history',default='retail-history.json');a=p.parse_args()
  if not a.authorised:p.error('Confirm feed display and reuse rights first')
@@ -101,5 +127,9 @@ if __name__=='__main__':
  history=record_history(rows,json.loads(history_path.read_text()) if history_path.exists() else {})
  for row in rows:row['price_history']=price_context(row,history)
  # History contains prices, dates and opaque identities only; no credentials.
- history_path.write_text(json.dumps(history,indent=2))
- Path(a.output).write_text(json.dumps({'products':rows,'matches':groups(rows),'coverage':'Authorised imported snapshot; confirm availability'},indent=2))
+ export={'products':rows,'matches':groups(rows),'coverage':'Authorised imported snapshot; confirm availability'}
+ # Validate both serialisations before replacing either file.
+ json.dumps(history,allow_nan=False)
+ json.dumps(export,allow_nan=False)
+ write_json_atomic(history_path,history)
+ write_json_atomic(a.output,export)
