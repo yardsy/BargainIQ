@@ -106,6 +106,52 @@ def main():
         expect(page.locator("#auth")).to_be_visible()
         expect(page.locator("#resetPanel")).to_be_hidden()
         assert any(method=="PUT" and url.endswith("/user") for method,url,_ in requests)
+        # Signed-in account flows with synthetic API data only.
+        uid="11111111-1111-4111-8111-111111111111"
+        deal_id="22222222-2222-4222-8222-222222222222"
+        verified=dict(offer,id=deal_id)
+        saved=[]
+        targets=[]
+        headers={"access-control-allow-origin":"*","access-control-allow-methods":"GET,POST,DELETE,OPTIONS","access-control-allow-headers":"apikey,authorization,content-type,prefer"}
+        def mock_account(route):
+            request=route.request
+            if request.method=="OPTIONS":
+                route.fulfill(status=204,headers=headers)
+                return
+            url=request.url
+            if "/auth/v1/token" in url:
+                result={"access_token":"test-token","user":{"id":uid}}
+            elif "/public_deals?" in url:
+                result=[verified]
+            elif "/watchlists" in url:
+                if request.method=="POST":
+                    saved.append(dict(request.post_data_json,id="test-watch"))
+                result=saved
+            elif "/price_alerts" in url:
+                if request.method=="POST":
+                    targets.append(dict(request.post_data_json,id="test-target"))
+                result=targets
+            else:
+                result=[]
+            route.fulfill(json=result,headers=headers)
+        page.route("**/auth/v1/token?*",mock_account)
+        page.route("**/rest/v1/**",mock_account)
+        page.goto("http://127.0.0.1:8765/account.html?save="+deal_id)
+        page.locator("#auth [name=email]").fill("test@example.invalid")
+        page.locator("#auth [name=password]").fill("Test-password-123")
+        page.locator("#auth button[value=login]").click()
+        expect(page.locator("#pendingSaveTitle")).to_contain_text("Browser test chair")
+        page.locator("#confirmSave").click()
+        expect(page.locator("#items")).to_contain_text("Browser test chair")
+        expect(page.locator("#items")).to_contain_text("$99.95")
+        page.locator("#items button").filter(has_text="Set price target").click()
+        expect(page.locator("#alertsPanel")).to_be_visible()
+        page.locator("#targetForm [name=target_price]").fill("100")
+        page.locator("#targetForm button").click()
+        expect(page.locator("#targetItems")).to_contain_text("Target reached")
+        assert len(saved)==1 and len(targets)==1
+        page.unroute("**/rest/v1/**",mock_account)
+        page.unroute("**/auth/v1/token?*",mock_account)
         page.goto("http://127.0.0.1:8765/index.html")
         expect(page.locator("#ad-top")).to_be_hidden()
         expect(page.locator("#ad-secondary")).to_be_hidden()
