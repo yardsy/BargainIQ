@@ -57,3 +57,26 @@ class PublicBuildTests(unittest.TestCase):
                 self.assertIn(header,headers)
             for p in [out/"index.html",out/"account.html"]:
                 self.assertNotIn('name="bargainiq-analytics-endpoint"',p.read_text())
+
+    def test_rebuild_replaces_obsolete_output(self):
+        root=Path(build_site.__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as d:
+            stage=Path(d)
+            for p in root.iterdir():
+                if p.is_file() and p.suffix in (".html",".json",".js",".py"):
+                    shutil.copy2(p,stage/p.name)
+            out=stage/"public"
+            out.mkdir()
+            (out/"obsolete.html").write_text("obsolete")
+            (out/"obsolete-folder").mkdir()
+            (out/"obsolete-folder"/"old.txt").write_text("old")
+            (stage/"retail.json").write_text('{"products":[]}')
+            with patch.object(build_site,"__file__",str(stage/"build_site.py")):
+                build_site.main()
+                self.assertTrue((out/"retail.json").is_file())
+                (stage/"retail.json").unlink()
+                build_site.main()
+            self.assertFalse((out/"obsolete.html").exists())
+            self.assertFalse((out/"obsolete-folder").exists())
+            self.assertFalse((out/"retail.json").exists())
+            self.assertTrue((out/"index.html").is_file())
