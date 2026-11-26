@@ -13,6 +13,8 @@ def main():
             copy2(root/name,output/name)
     from editorial import build_guides
     build_guides(root/"guides.html", output)
+    from launch_seo import prepare_beta
+    prepare_beta(output)
     print("Prepared public website.")
 
 if __name__=="__main__":

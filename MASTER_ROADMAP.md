@@ -6,7 +6,8 @@ Status: [x] merged implementation (not necessarily verified production); [ ] out
 - [x] Website design/navigation, retail and vehicle comparison frameworks, resale calculator
 - [x] Accounts, watchlists, price history, specification filters, natural-language requests
 - [x] Account-synchronised searches and cross-device tests (PR 10 passed and merged; production and real-account isolation verification pending)
-- [ ] Multi-retailer processing and scheduled refresh integration (V12)
+- [x] Multi-retailer processing and scheduled preview validation (V12, PR 11 passed and merged)
+- [ ] Activate authorised inventory feeds and publication
 - [ ] Resolve GitHub validation, merge outstanding branches, verify production
 - [ ] Mobile and desktop regression testing
 
@@ -21,7 +22,8 @@ Status: [x] merged implementation (not necessarily verified production); [ ] out
 
 ## 3. SEO, analytics and acquisition
 - [x] Initial SEO metadata and private-beta indexing safeguards
-- [ ] Integrate analytics processing, admin reporting and live event collection
+- [x] Aggregate analytics processing and admin report import (PR 11 merged)
+- [ ] Live analytics collection and admin reporting integration
 - [ ] Retailer click tracking, keyword/competition research, individual article SEO
 - [ ] Internal links, sitemap and robots configuration
 - [ ] Search Console and Bing Webmaster Tools verification
@@ -36,7 +38,8 @@ Status: [x] merged implementation (not necessarily verified production); [ ] out
 - [ ] Authorised API/feed access, retrieval, validated publication and accuracy monitoring
 
 ## 5. Advanced customer functionality
-- [ ] Integrate and test price-target and shopping-request matching and duplicate prevention
+- [x] Price-target and shopping-request matching engine and unit tests (PR 11 merged)
+- [ ] Connect matching to authorised inventory, saved preferences and notification delivery
 - [ ] Notification preferences, automatic email delivery and matching product alerts
 - [ ] Customer feedback
 
@@ -52,4 +55,4 @@ Status: [x] merged implementation (not necessarily verified production); [ ] out
 - [ ] Commission Factory reapplication, retailer/category expansion and profitable growth
 
 ## Immediate sequence
-PRs 7, 8, 9 and 10 passed tests and merged. V12 recovered on current main in v12-release-integration; test before merge. Verify live deployment. Build useful original editorial pages and imagery while awaiting approved inventory. Establish genuine analytics and public content readiness before reapplication. Prioritise release over new disconnected modules.
+PRs 7, 8, 9 and 10 passed tests and merged. PR 11 (V12) passed validation and merged. Homepage, original diagrams and beta SEO preparation on launch-content-seo; validate before merge. Verify live deployment. Build useful original editorial pages and imagery while awaiting approved inventory. Establish genuine analytics and public content readiness before reapplication. Prioritise release over new disconnected modules.
