@@ -10,6 +10,12 @@ DESCRIPTIONS={
  "gaming":"Choose a gaming monitor based on resolution, hardware and measured performance.",
  "vehicles":"Compare Australian new-car quotes, drive-away prices and delivery conditions.",
  "clearance":"Evaluate clearance prices, product condition, delivery and warranty.",
+ "tv-units":"TV unit dimensions, shelf openings, ventilation, cable access and delivered cost.",
+ "coffee-tables":"Footprint, height, finish, cleaning instructions, stability and freight.",
+ "desks":"Usable width and depth, knee clearance, load rating, cable management and assembly.",
+ "robot-vacuums":"Thresholds, dock dimensions, floor tests, consumables, privacy and warranty.",
+ "coffee-machines":"Drink workflow, grinder, heating, cleaning, accessories and servicing.",
+ "mattresses":"Size, comfort, base compatibility, trial terms, delivery and warranty.",
 }
 
 def build_guides(source,output):
