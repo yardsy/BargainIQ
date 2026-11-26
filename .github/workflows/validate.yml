@@ -32,6 +32,7 @@ jobs:
         run: |
           node test_engagement.js
           node test_analytics_request.mjs
+          node test_analytics_handler.mjs
       - name: Install browser test dependencies
         run: |
           python -m pip install playwright==1.55.0
