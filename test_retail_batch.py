@@ -71,3 +71,27 @@ class RetailBatchTests(unittest.TestCase):
         _,history,_=build([self.source([old])],self.root,{},self.now)
         export,_,_=build([self.source([self.row()])],self.root,history,self.now)
         self.assertEqual(export['products'][0]['price_history']['previous_price'],150)
+
+    def test_missing_required_header(self):
+        source=self.source([self.row()])
+        (self.root/'a.csv').write_text('retailer,name\nStore A,Lamp\n')
+        with self.assertRaisesRegex(ValueError,'Invalid feed header'):
+            build([source],self.root,{},self.now)
+
+    def test_duplicate_header(self):
+        source=self.source([self.row()])
+        p=self.root/'a.csv'
+        lines=p.read_text().splitlines()
+        p.write_text(lines[0]+',price\n'+lines[1]+',100\n')
+        with self.assertRaisesRegex(ValueError,'Invalid feed header'):
+            build([source],self.root,{},self.now)
+
+    def test_ragged_rows(self):
+        source=self.source([self.row()])
+        p=self.root/'a.csv'
+        lines=p.read_text().splitlines()
+        for row in (lines[1]+',unexpected',lines[1].rsplit(',',1)[0]):
+            with self.subTest(row=row):
+                p.write_text(lines[0]+'\n'+row+'\n')
+                with self.assertRaisesRegex(ValueError,'column count mismatch'):
+                    build([source],self.root,{},self.now)
