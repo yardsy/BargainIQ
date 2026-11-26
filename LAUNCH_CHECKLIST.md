@@ -3,7 +3,8 @@
 Private beta remains noindex until all public launch gates are verified.
 
 - [x] V11 mocked account browser tests pass (PR 10).
-- [ ] Real database ownership checks pass.
+- [x] Controlled SQL ownership checks pass for saved searches, watchlists, price alerts, profiles and submissions (26 November 2026; rollback fixtures).
+- [ ] Verify real browser sessions and remaining privilege hardening.
 - [x] V12 importer, matching, aggregate analytics and commercial validation tests pass (PR 11).
 - [x] Disabled analytics client and privacy tests pass (PR 13).
 - [ ] Genuine inventory from approved feeds is fresh and verified.
