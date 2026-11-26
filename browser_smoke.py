@@ -20,6 +20,14 @@ def main():
         third=dict(retail,name="Test chair",category="Furniture",url="https://example.invalid/chair",shipping=None,price=90,price_history=None,width_cm=None,depth_cm=None)
         page.route("**/retail.json",lambda route:route.fulfill(json=dict(products=[retail,second,third],matches=[[retail,second]])))
         page.goto("http://127.0.0.1:8765/index.html")
+        expect(page.locator(".editorialGrid a")).to_have_count(6)
+        expect(page.locator(".editorialGrid .categoryIcon svg")).to_have_count(6)
+        expect(page.locator(".editorialHub")).to_be_visible()
+        assert page.evaluate("document.querySelector('.editorialHub').getBoundingClientRect().top < document.querySelector('#verifiedDeals').getBoundingClientRect().top")
+        for width in (320,390,768,1280):
+            page.set_viewport_size({"width":width,"height":900})
+            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), f"Horizontal overflow at {width}px"
+        page.set_viewport_size({"width":390,"height":844})
         expect(page.locator("#retailResults")).to_contain_text("Test lamp")
         expect(page.locator("#browseCategories")).to_contain_text("Lighting (2 listings)")
         page.locator("#browseCategories button").filter(has_text="Furniture").click()
