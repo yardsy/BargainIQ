@@ -6,8 +6,9 @@ function run({endpoint,privacy=false,dnt="0"}={}){
  vm.runInNewContext(source,ctx);
  return {sent,ctx,listeners,searchListeners,timers};
 }
-const endpoint="/.netlify/functions/engagement";
+const endpoint="/api/engagement";
 for(const opts of [{},{endpoint:"https://example.com"},{endpoint,privacy:true},{endpoint,dnt:"1"}]) assert.equal(run(opts).sent.length,0);
+assert.equal(run({endpoint:"/.netlify/functions/engagement"}).sent.length,0);
 const t=run({endpoint});
 assert.equal(t.sent.length,1);
 assert.deepEqual(JSON.parse(t.sent[0].opts.body),{event:"page_view",view:"same",category:"unknown"});

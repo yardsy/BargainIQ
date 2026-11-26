@@ -4,9 +4,9 @@ const allowedViews=new Set(["home","all","same","clearance","flip","car","watch"
 const allowedEvents=new Set(["page_view","retailer_click","search_run","request_saved"]);
 const allowedCategories=new Set(["retail","vehicle","unknown"]);
 const endpoint=document.querySelector('meta[name="bargainiq-analytics-endpoint"]')?.content;
-if(!endpoint||endpoint!=="/.netlify/functions/engagement")return;
+if(!endpoint||endpoint!=="/api/engagement")return;
 if(navigator.globalPrivacyControl||navigator.doNotTrack==="1")return;
-function view(){const v=new URLSearchParams(location.search).get("view");return allowedViews.has(v)?v:location.pathname.endsWith("/account.html")?"account":"home"}
+function view(){const v=new URLSearchParams(location.search).get("view");return allowedViews.has(v)?v:/\/account(?:\.html)?\/?$/.test(location.pathname)?"account":"home"}
 function record(event,category="unknown"){if(!allowedEvents.has(event)||!allowedCategories.has(category))return;const payload=JSON.stringify({event,view:view(),category});fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:payload,credentials:"omit",referrerPolicy:"no-referrer",keepalive:true}).catch(()=>{});}
 window.bargainIQEngagement=record;
 record("page_view");

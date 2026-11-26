@@ -29,7 +29,10 @@ jobs:
                   subprocess.run(['node','--check',str(p)],check=True)
           PY
       - name: Validate engagement client
-        run: node test_engagement.js
+        run: |
+          node test_engagement.js
+          node test_analytics_request.mjs
+          node test_analytics_handler.mjs
       - name: Install browser test dependencies
         run: |
           python -m pip install playwright==1.55.0
