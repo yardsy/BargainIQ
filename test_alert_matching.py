@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime,timezone,timedelta
 from retail import parse
-from alert_matching import target_matches,shopping_matches,newly_matched
+from alert_matching import target_matches,shopping_matches,newly_matched,plan_shopping_alerts
 
 class AlertMatchingTests(unittest.TestCase):
     def setUp(self):
@@ -39,3 +39,23 @@ class AlertMatchingTests(unittest.TestCase):
     def test_new_matches(self):
         self.assertEqual(newly_matched(['a','b','b','c'],['a','c']),['b'])
         self.assertEqual(newly_matched(['a'],['a']),[])
+
+    def test_alert_plan_requires_explicit_consent(self):
+        sub=dict(enabled=True,email_opt_in=True,criteria=dict(fields=dict(search='oak')))
+        self.assertEqual(len(plan_shopping_alerts(sub,[self.row],[],self.now)),1)
+        for changes in [dict(enabled=False),dict(email_opt_in=False),dict(email_opt_in='true'),dict(criteria={})]:
+            self.assertEqual(plan_shopping_alerts(dict(sub,**changes),[self.row],[],self.now),[])
+
+    def test_alert_plan_deduplicates_delivered_and_repeated_offers(self):
+        sub=dict(enabled=True,email_opt_in=True,criteria=dict(fields=dict(search='oak')))
+        older=dict(self.row,observed_at=(self.now-timedelta(days=1)).isoformat(),price=95)
+        result=plan_shopping_alerts(sub,[older,self.row,self.row],[],self.now)
+        self.assertEqual(len(result),1)
+        self.assertEqual(result[0]['offer']['price'],90)
+        self.assertEqual(plan_shopping_alerts(sub,[self.row],[result[0]['offer_key']],self.now),[])
+        self.assertEqual(len(plan_shopping_alerts(sub,[self.row],[],self.now)),1)
+
+    def test_alert_plan_excludes_stale_and_over_budget(self):
+        sub=dict(enabled=True,email_opt_in=True,criteria=dict(fields=dict(search='oak',specBudget='100')))
+        rows=[dict(self.row,price=101),dict(self.row,observed_at=(self.now-timedelta(days=8)).isoformat())]
+        self.assertEqual(plan_shopping_alerts(sub,rows,[],self.now),[])
