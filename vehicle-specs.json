@@ -1,0 +1,215 @@
+{
+  "market": "AU",
+  "checked": "2026-11-27",
+  "coverageSource": "https://www.theautoexec.com/car-sales/?cs_period=ytd",
+  "brands": [
+    "Toyota",
+    "BYD",
+    "Ford",
+    "Kia",
+    "Mazda",
+    "Hyundai",
+    "GWM",
+    "Tesla",
+    "Chery",
+    "MG",
+    "Mitsubishi",
+    "Isuzu Ute",
+    "Geely",
+    "Subaru",
+    "Nissan",
+    "BMW",
+    "Volkswagen",
+    "Mercedes-Benz Cars",
+    "Jaecoo",
+    "Zeekr"
+  ],
+  "features": [
+    {
+      "group": "Comfort",
+      "label": "Upholstery"
+    },
+    {
+      "group": "Comfort",
+      "label": "Heated front seats"
+    },
+    {
+      "group": "Comfort",
+      "label": "Electric driver seat (10-way)"
+    },
+    {
+      "group": "Comfort",
+      "label": "Electric passenger seat (8-way)"
+    },
+    {
+      "group": "Comfort",
+      "label": "Ventilated front seats"
+    },
+    {
+      "group": "Comfort",
+      "label": "Heated steering wheel"
+    },
+    {
+      "group": "Convenience",
+      "label": "Hands-free powered tailgate"
+    },
+    {
+      "group": "Convenience",
+      "label": "Auto-dimming rear-view mirror"
+    },
+    {
+      "group": "Technology",
+      "label": "Driver display"
+    },
+    {
+      "group": "Lighting",
+      "label": "LED headlights"
+    },
+    {
+      "group": "Lighting",
+      "label": "Projector headlights"
+    },
+    {
+      "group": "Lighting",
+      "label": "Adjustable ambient lighting"
+    },
+    {
+      "group": "Practicality",
+      "label": "Split-folding rear seats"
+    },
+    {
+      "group": "Practicality",
+      "label": "Roof rails"
+    },
+    {
+      "group": "Comfort",
+      "label": "Rear air vents"
+    },
+    {
+      "group": "Driving",
+      "label": "Steering-column gear selector"
+    },
+    {
+      "group": "Driving",
+      "label": "Paddle shifters"
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "kona-2026-petrol-0",
+      "brand": "Hyundai",
+      "model": "Kona",
+      "year": 2026,
+      "variant": "Base",
+      "powertrain": "2.0L petrol FWD",
+      "source": "https://www.hyundai.com/content/dam/hyundai/au/en/models/kona/brochures/1631_11_Specification_Sheet_KONA_v4.pdf",
+      "specs": [
+        "Cloth",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        "4.2-inch",
+        true,
+        false,
+        false,
+        "60:40",
+        true,
+        true,
+        false,
+        false
+      ],
+      "price": null
+    },
+    {
+      "id": "kona-2026-petrol-1",
+      "brand": "Hyundai",
+      "model": "Kona",
+      "year": 2026,
+      "variant": "Elite V3",
+      "powertrain": "2.0L petrol FWD",
+      "source": "https://www.hyundai.com/content/dam/hyundai/au/en/models/kona/brochures/1631_11_Specification_Sheet_KONA_v4.pdf",
+      "specs": [
+        "Leather-appointed",
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        "12.3-inch",
+        true,
+        false,
+        false,
+        "60:40",
+        true,
+        true,
+        true,
+        true
+      ],
+      "price": null
+    },
+    {
+      "id": "kona-2026-petrol-2",
+      "brand": "Hyundai",
+      "model": "Kona",
+      "year": 2026,
+      "variant": "Elite V3.5",
+      "powertrain": "2.0L petrol FWD",
+      "source": "https://www.hyundai.com/content/dam/hyundai/au/en/models/kona/brochures/1631_11_Specification_Sheet_KONA_v4.pdf",
+      "specs": [
+        "Leather-appointed",
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        "4.2-inch",
+        true,
+        false,
+        false,
+        "60:40",
+        true,
+        true,
+        true,
+        true
+      ],
+      "price": null
+    },
+    {
+      "id": "kona-2026-petrol-3",
+      "brand": "Hyundai",
+      "model": "Kona",
+      "year": 2026,
+      "variant": "Premium",
+      "powertrain": "2.0L petrol FWD",
+      "source": "https://www.hyundai.com/content/dam/hyundai/au/en/models/kona/brochures/1631_11_Specification_Sheet_KONA_v4.pdf",
+      "specs": [
+        "Leather-appointed",
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        "12.3-inch",
+        true,
+        true,
+        true,
+        "60:40",
+        true,
+        true,
+        true,
+        true
+      ],
+      "price": null
+    }
+  ]
+}

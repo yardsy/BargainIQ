@@ -18,7 +18,7 @@ def main():
     print('Prepared public website.')
 
 def build(root,output):
-    for name in ("index.html","account.html","about.html","guides.html","methodology.html","engagement.js","stock.json"):
+    for name in ("index.html","account.html","about.html","guides.html","methodology.html","engagement.js","stock.json","car-compare.html","vehicle-compare.js","vehicle-specs.json"):
         copy2(root/name,output/name)
     for name in ("retail.json","history.json","commission-factory-237c1dd364344b708a80b3ce2251b3b7.html"):
         if (root/name).is_file():
