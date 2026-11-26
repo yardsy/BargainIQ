@@ -29,10 +29,13 @@ def main():
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), f"Horizontal overflow at {width}px"
         page.set_viewport_size({"width":390,"height":844})
         expect(page.locator("#retailResults")).to_contain_text("Test lamp")
+        expect(page.locator("#retailResultCount")).to_have_text("3 matching listings")
+        expect(page.locator("#retailResultCount")).to_have_attribute("role","status")
         expect(page.locator("#browseCategories")).to_contain_text("Lighting (2 listings)")
         page.locator("#browseCategories button").filter(has_text="Furniture").click()
         expect(page.locator("#retailResults article")).to_have_count(1)
         expect(page.locator("#retailResults")).to_contain_text("Test chair")
+        expect(page.locator("#retailResultCount")).to_have_text("1 matching listings")
         page.locator("#browseCategories button").filter(has_text="All products").click()
         expect(page.locator("#retailResults article")).to_have_count(3)
         page.locator("#browseDiscovery button").filter(has_text="Recorded price drops").click()
