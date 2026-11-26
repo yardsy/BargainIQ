@@ -5,18 +5,19 @@ Status: [x] merged implementation (not necessarily verified production); [ ] out
 ## 1. Complete existing development
 - [x] Website design/navigation, retail and vehicle comparison frameworks, resale calculator
 - [x] Accounts, watchlists, price history, specification filters, natural-language requests
-- [ ] Account-synchronised searches and cross-device tests (PR 6)
+- [x] Account-synchronised searches and cross-device tests (PR 10 passed and merged; production and real-account isolation verification pending)
 - [ ] Multi-retailer processing and scheduled refresh integration (V12)
 - [ ] Resolve GitHub validation, merge outstanding branches, verify production
 - [ ] Mobile and desktop regression testing
 
 ## 2. Content and website quality
 - [x] Buying guide library release (PR 7 merged; PR 8 merged with 12 individual pages)
-- [ ] 30 individual original articles (30 written on editorial-categories; pending release)
-- [ ] Six category landing pages (implemented on editorial-categories; pending release)
+- [x] 30 individual original articles (PR 9 passed and merged)
+- [x] Six category landing pages (PR 9 passed and merged)
 - [ ] Genuine product comparisons/listings
 - [ ] Original or authorised imagery and educational diagrams
-- [ ] Editorial methodology (written; pending release), homepage content, consolidate empty sections
+- [x] Editorial methodology (PR 9 passed and merged)
+- [ ] Homepage content and consolidation of empty sections
 
 ## 3. SEO, analytics and acquisition
 - [x] Initial SEO metadata and private-beta indexing safeguards
@@ -51,4 +52,4 @@ Status: [x] merged implementation (not necessarily verified production); [ ] out
 - [ ] Commission Factory reapplication, retailer/category expansion and profitable growth
 
 ## Immediate sequence
-Validate PR 6; PRs 7 and 8 merged after successful tests. Validate 30-guide category release; integrate V12 only after tests. Build useful original editorial pages and imagery while awaiting approved inventory. Establish genuine analytics and public content readiness before reapplication. Prioritise release over new disconnected modules.
+PRs 7, 8, 9 and 10 passed tests and merged. V12 recovered on current main in v12-release-integration; test before merge. Verify live deployment. Build useful original editorial pages and imagery while awaiting approved inventory. Establish genuine analytics and public content readiness before reapplication. Prioritise release over new disconnected modules.
