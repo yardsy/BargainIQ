@@ -16,16 +16,19 @@ Status: [x] merged implementation (not necessarily verified production); [ ] out
 - [x] 30 individual original articles (PR 9 passed and merged)
 - [x] Six category landing pages (PR 9 passed and merged)
 - [ ] Genuine product comparisons/listings
-- [ ] Original or authorised imagery and educational diagrams
+- [x] Initial four original educational diagrams (PR 12 merged)
+- [ ] Expand original or authorised product imagery
 - [x] Editorial methodology (PR 9 passed and merged)
-- [ ] Homepage content and consolidation of empty sections
+- [x] Homepage editorial navigation (PR 12 merged)
+- [ ] Consolidate empty inventory sections
 
 ## 3. SEO, analytics and acquisition
 - [x] Initial SEO metadata and private-beta indexing safeguards
 - [x] Aggregate analytics processing and admin report import (PR 11 merged)
-- [ ] Live analytics collection and admin reporting integration
+- [ ] Live analytics collection and admin reporting integration (browser event client implemented, disabled; backend and activation pending)
 - [ ] Retailer click tracking, keyword/competition research, individual article SEO
-- [ ] Internal links, sitemap and robots configuration
+- [x] Internal links, beta robots policy and offline sitemap generation (PR 12 merged)
+- [ ] Publish sitemap after launch checks
 - [ ] Search Console and Bing Webmaster Tools verification
 - [ ] Enable public indexing only after launch checks
 - [ ] Organic social strategy, performance optimisation, final brand identity
@@ -55,4 +58,4 @@ Status: [x] merged implementation (not necessarily verified production); [ ] out
 - [ ] Commission Factory reapplication, retailer/category expansion and profitable growth
 
 ## Immediate sequence
-PRs 7, 8, 9 and 10 passed tests and merged. PR 11 (V12) passed validation and merged. Homepage, original diagrams and beta SEO preparation on launch-content-seo; validate before merge. Verify live deployment. Build useful original editorial pages and imagery while awaiting approved inventory. Establish genuine analytics and public content readiness before reapplication. Prioritise release over new disconnected modules.
+PRs 7, 8, 9 and 10 passed tests and merged. PR 11 (V12) passed validation and merged. PR 12 passed validation and merged homepage, original diagrams and beta SEO preparation. Analytics client changes awaiting validation; backend not active. Verify live deployment. Build useful original editorial pages and imagery while awaiting approved inventory. Establish genuine analytics and public content readiness before reapplication. Prioritise release over new disconnected modules.
