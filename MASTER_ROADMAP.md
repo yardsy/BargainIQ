@@ -58,7 +58,8 @@ Status: [x] merged implementation (not necessarily verified production); [ ] out
 - [ ] First revenue
 
 ## 7. Launch and growth
-- [ ] Security/privacy review and production verification
+- [x] Live database RLS audit: 13/13 public tables protected; anonymous customer data access denied; controlled two-account saved-search, watchlist and price-target isolation tests passed 26 November 2026 (transaction rollback)
+- [ ] Remaining security/privacy review: profiles/submissions isolation, narrower grants, leaked-password protection, account removal and production verification
 - [ ] Public launch, customer acquisition, conversion optimisation
 - [ ] Commission Factory reapplication, retailer/category expansion and profitable growth
 
