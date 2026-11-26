@@ -226,6 +226,15 @@ def main():
         expect(page.locator("#ad-secondary")).to_be_hidden()
         page.locator('a[href="about.html"]').click()
         expect(page.locator("h1")).to_have_text("About BargainIQ")
+        page.evaluate("""localStorage.setItem("bargainiq-watch","[]");localStorage.setItem("bargainiq-saved-searches-v1","[]");localStorage.setItem("bargainiq-recent-v1","[]");localStorage.setItem("bargainiq-submission","{}");localStorage.setItem("unrelated-test-key","keep")""")
+        page.once("dialog", lambda dialog: dialog.dismiss())
+        page.locator("#clearLocal").click()
+        assert page.evaluate("localStorage.getItem('bargainiq-watch')") == "[]"
+        page.once("dialog", lambda dialog: dialog.accept())
+        page.locator("#clearLocal").click()
+        expect(page.locator("#privacyStatus")).to_contain_text("Account records were not changed")
+        assert page.evaluate("""['bargainiq-watch','bargainiq-saved-searches-v1','bargainiq-recent-v1','bargainiq-submission'].every(k=>localStorage.getItem(k)===null)""")
+        assert page.evaluate("localStorage.getItem('unrelated-test-key')") == "keep"
         assert not errors, errors
         browser.close()
     print("Browser smoke checks passed (mock feed, mobile viewport, navigation, calculator and signed-out account).")
