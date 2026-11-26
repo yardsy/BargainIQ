@@ -15,6 +15,7 @@ def main():
     build_guides(root/"guides.html", output)
     from launch_seo import prepare_beta
     prepare_beta(output)
+    (output/"_headers").write_text("/*\n  X-Content-Type-Options: nosniff\n  X-Robots-Tag: noindex, nofollow\n  Referrer-Policy: no-referrer\n  X-Frame-Options: DENY\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n", encoding="utf-8")
     print("Prepared public website.")
 
 if __name__=="__main__":
