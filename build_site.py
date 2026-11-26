@@ -11,6 +11,8 @@ def main():
     for name in ("retail.json","history.json","commission-factory-237c1dd364344b708a80b3ce2251b3b7.html"):
         if (root/name).is_file():
             copy2(root/name,output/name)
+    from editorial import build_guides
+    build_guides(root/"guides.html", output)
     print("Prepared public website.")
 
 if __name__=="__main__":
