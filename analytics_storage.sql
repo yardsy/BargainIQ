@@ -33,7 +33,7 @@ GRANT DELETE ON public.engagement_daily TO service_role;
 -- Replace the preliminary counter with a capped counter in the same transaction.
 DROP FUNCTION public.increment_engagement(text,text,text);
 CREATE FUNCTION public.increment_engagement(p_event text,p_view text,p_category text)
-RETURNS boolean LANGUAGE plpgsql SECURITY INVOKER SET search_path = '' AS $
+RETURNS boolean LANGUAGE plpgsql SECURITY INVOKER SET search_path = '' AS $body$
 DECLARE
  d date := (CURRENT_TIMESTAMP AT TIME ZONE 'UTC')::date;
 BEGIN
@@ -51,14 +51,14 @@ BEGIN
  ON CONFLICT(day,event,view_name,category) DO UPDATE SET count=public.engagement_daily.count+1;
  RETURN true;
 END;
-$;
+$body$;
 REVOKE ALL ON FUNCTION public.increment_engagement(text,text,text) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.increment_engagement(text,text,text) TO service_role;
 CREATE FUNCTION public.prune_engagement()
-RETURNS void LANGUAGE sql SECURITY INVOKER SET search_path = '' AS $
+RETURNS void LANGUAGE sql SECURITY INVOKER SET search_path = '' AS $body$
  DELETE FROM public.engagement_daily WHERE day < (CURRENT_TIMESTAMP AT TIME ZONE 'UTC')::date - 89;
  DELETE FROM public.engagement_daily_budget WHERE day < (CURRENT_TIMESTAMP AT TIME ZONE 'UTC')::date - 89;
-$;
+$body$;
 REVOKE ALL ON FUNCTION public.prune_engagement() FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.prune_engagement() TO service_role;
 COMMIT;
