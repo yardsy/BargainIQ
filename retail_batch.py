@@ -35,7 +35,13 @@ def build(manifest,root,previous,now=None):
         stale=0
         identities=set()
         with path.open(encoding='utf-8-sig',newline='') as f:
-            for raw in csv.DictReader(f):
+            reader=csv.DictReader(f)
+            required={'retailer','name','url','price','observed_at','condition','currency'}
+            if not reader.fieldnames or not required.issubset(reader.fieldnames) or len(set(reader.fieldnames))!=len(reader.fieldnames):
+                raise ValueError('Invalid feed header: required fields missing or duplicated')
+            for raw in reader:
+                if None in raw or any(v is None for v in raw.values()):
+                    raise ValueError('Malformed CSV row: column count mismatch')
                 if raw.get('retailer','').strip().casefold()!=key:
                     raise ValueError('Retailer mismatch')
                 row=parse({k:v for k,v in raw.items() if k in PUBLIC_FIELDS})
