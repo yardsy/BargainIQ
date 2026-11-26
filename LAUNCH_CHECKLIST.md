@@ -2,8 +2,10 @@
 
 Private beta remains noindex until all public launch gates are verified.
 
-- [ ] V11 account browser tests and database ownership checks pass.
-- [ ] V12 importer, matching, analytics and commercial validation tests pass.
+- [x] V11 mocked account browser tests pass (PR 10).
+- [ ] Real database ownership checks pass.
+- [x] V12 importer, matching, aggregate analytics and commercial validation tests pass (PR 11).
+- [x] Disabled analytics client and privacy tests pass (PR 13).
 - [ ] Genuine inventory from approved feeds is fresh and verified.
 - [ ] Check production mobile navigation, accessibility and error states.
 - [ ] Confirm privacy notice covers active features and data retention.
