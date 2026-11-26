@@ -1,0 +1,16 @@
+import assert from "node:assert/strict";
+import {handleEngagement} from "./analytics_handler.mjs";
+const url="https://bargainiq.pages.dev/api/engagement";
+const event={event:"page_view",view:"home",category:"unknown"};
+const req=(headers={})=>new Request(url,{method:"POST",headers:{Origin:new URL(url).origin,"Content-Type":"application/json",...headers},body:JSON.stringify(event)});
+let writes=[];
+const options={enabled:true,allow:async()=>true,increment:async e=>writes.push(e)};
+assert.equal((await handleEngagement(req())).status,503);
+assert.equal((await handleEngagement(req(),{...options,allow:null})).status,503);
+assert.equal((await handleEngagement(req(),{...options,allow:async()=>false})).status,429);
+assert.equal((await handleEngagement(req({"Sec-GPC":"1"}),options)).status,204);
+assert.equal(writes.length,0);
+assert.equal((await handleEngagement(req(),options)).status,204);
+assert.deepEqual(writes,[event]);
+assert.equal((await handleEngagement(req(),{...options,increment:async()=>{throw Error("unavailable")}})).status,503);
+console.log("Analytics handler tests passed");
