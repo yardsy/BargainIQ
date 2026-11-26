@@ -10,9 +10,9 @@ DESCRIPTIONS={
  "gaming":"Choose a gaming monitor based on resolution, hardware and measured performance.",
  "vehicles":"Compare Australian new-car quotes, drive-away prices and delivery conditions.",
  "clearance":"Evaluate clearance prices, product condition, delivery and warranty.",
- "tv-units":"TV unit dimensions, shelf openings, ventilation, cable access and delivered cost.",
+ "tv-units":"Find shallow TV units under 40 cm deep: check console shelf dimensions, ventilation, cable access and delivered cost.",
  "coffee-tables":"Footprint, height, finish, cleaning instructions, stability and freight.",
- "desks":"Usable width and depth, knee clearance, load rating, cable management and assembly.",
+ "desks":"Choose a shallow desk for a small home office: compare usable dimensions, knee clearance, load rating and assembly.",
  "robot-vacuums":"Thresholds, dock dimensions, floor tests, consumables, privacy and warranty.",
  "coffee-machines":"Drink workflow, grinder, heating, cleaning, accessories and servicing.",
  "mattresses":"Size, comfort, base compatibility, trial terms, delivery and warranty.",
@@ -30,10 +30,10 @@ DESCRIPTIONS={
  "demo-cars":"Registration date, kilometres, condition, warranty, new-car alternative and price.",
  "car-finance":"Cash price, loan amount, term, fees, balloon and total payable.",
  "car-running-costs":"Annual distance, energy, insurance, registration, servicing, tyres and depreciation scenarios.",
- "delivery":"Postcode, freight, delivery service, access, installation and return terms.",
+ "delivery":"Compare delivered furniture prices in Australia, including postcode-specific freight, installation and return terms.",
  "price-history":"Exact product, retailer, observation dates, delivery, target price and current availability.",
  "refurbished":"Condition, testing, accessories, battery health where relevant, warranty and delivered cost.",
- "shopping-requests":"Product type, budget basis, measurements, condition, must-haves and flexible preferences.",
+ "shopping-requests":"Create a requirements-first shopping request with a delivered budget, maximum dimensions, condition and compatibility.",
 }
 
 CATEGORIES={
