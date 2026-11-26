@@ -169,6 +169,8 @@ def main():
         targets=[]
         account_searches=[]
         headers={"access-control-allow-origin":"*","access-control-allow-methods":"GET,POST,DELETE,OPTIONS","access-control-allow-headers":"apikey,authorization,content-type,prefer"}
+        admin_mode=False
+        analytics_requests=[]
         def mock_account(route):
             request=route.request
             if request.method=="OPTIONS":
@@ -177,6 +179,11 @@ def main():
             url=request.url
             if "/auth/v1/token" in url:
                 result={"access_token":"test-token","user":{"id":uid}}
+            elif "/admin_members?" in url:
+                result=[{"user_id":uid}] if admin_mode else []
+            elif "/engagement_daily?" in url:
+                analytics_requests.append(url)
+                result=[{"event":"page_view","view_name":"home","category":"unknown","count":12},{"event":"retailer_click","view_name":"same","category":"retail","count":3}] if admin_mode else []
             elif "/public_deals?" in url:
                 result=[verified]
             elif "/watchlists" in url:
@@ -234,6 +241,24 @@ def main():
         page.locator("#accountSearches button").filter(has_text="Remove").click()
         expect(page.locator("#accountSearches")).to_contain_text("No account shopping requests")
         assert not account_searches
+        expect(page.locator("#adminNav")).to_be_hidden()
+        assert not analytics_requests
+        page.locator("#logout").click()
+        admin_mode=True
+        page.locator("#auth [name=email]").fill("admin@example.invalid")
+        page.locator("#auth [name=password]").fill("Test-password-123")
+        page.locator("#auth button[value=login]").click()
+        expect(page.locator("#adminNav")).to_be_visible()
+        page.locator("#adminNav").click()
+        expect(page.locator("#analyticsMetrics")).to_contain_text("Page views: 12")
+        expect(page.locator("#analyticsMetrics")).to_contain_text("Retailer clicks: 3")
+        expect(page.locator("#analyticsBreakdown")).to_contain_text("home: 12 views")
+        page.locator("#refreshAnalytics").click()
+        expect(page.locator("#analyticsStatus")).to_contain_text("Last seven UTC days")
+        assert analytics_requests and all("day=gte." in url for url in analytics_requests)
+        page.locator("#logout").click()
+        expect(page.locator("#analyticsMetrics")).to_be_empty()
+        expect(page.locator("#adminPanel")).to_be_hidden()
         page.unroute("**/rest/v1/**",mock_account)
         page.unroute("**/auth/v1/token?*",mock_account)
         page.goto("http://127.0.0.1:8765/index.html")
