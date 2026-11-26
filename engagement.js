@@ -10,5 +10,6 @@ function view(){const v=new URLSearchParams(location.search).get("view");return 
 function record(event,category="unknown"){if(!allowedEvents.has(event)||!allowedCategories.has(category))return;const payload=JSON.stringify({event,view:view(),category});fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:payload,credentials:"omit",referrerPolicy:"no-referrer",keepalive:true}).catch(()=>{});}
 window.bargainIQEngagement=record;
 record("page_view");
+let searchTimer;document.getElementById("search")?.addEventListener("input",e=>{if(!e.isTrusted)return;clearTimeout(searchTimer);if(e.target.value.trim())searchTimer=setTimeout(()=>record("search_run","retail"),1000);});
 document.addEventListener("click",e=>{if(!e.isTrusted)return;const link=e.target.closest?.('a[data-engagement-category]');if(link)record("retailer_click",link.dataset.engagementCategory);},true);
 })();
