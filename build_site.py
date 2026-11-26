@@ -6,7 +6,7 @@ def main():
     root=Path(__file__).resolve().parent
     output=root/"public"
     output.mkdir(exist_ok=True)
-    for name in ("index.html","account.html","about.html","guides.html","stock.json"):
+    for name in ("index.html","account.html","about.html","guides.html","methodology.html","stock.json"):
         copy2(root/name,output/name)
     for name in ("retail.json","history.json","commission-factory-237c1dd364344b708a80b3ce2251b3b7.html"):
         if (root/name).is_file():

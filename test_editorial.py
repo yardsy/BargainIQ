@@ -2,7 +2,7 @@ import re
 import tempfile
 import unittest
 from pathlib import Path
-from editorial import build_guides,DESCRIPTIONS
+from editorial import build_guides,DESCRIPTIONS,CATEGORIES
 
 class EditorialTests(unittest.TestCase):
     def test_generate(self):
@@ -21,6 +21,19 @@ class EditorialTests(unittest.TestCase):
                 for link in re.findall(r'href="(guide-[a-z0-9-]+\.html)"',html):
                     self.assertTrue((out/link).is_file(),link)
             self.assertNotIn("Shopping checklist:",hub)
+            self.assertEqual(len(DESCRIPTIONS),30)
+            self.assertEqual(len(CATEGORIES),6)
+            self.assertEqual(len(list(out.glob("category-*.html"))),6)
+            for key,(title,description,slugs) in CATEGORIES.items():
+                page=out/f"category-{key}.html"
+                html=page.read_text()
+                self.assertIn(f'href="{page.name}"',hub)
+                self.assertIn(description,html)
+                self.assertIn('href="methodology.html"',html)
+                for slug in slugs:
+                    self.assertIn(f'href="guide-{slug}.html"',html)
+                    self.assertIn(f'href="{page.name}"',(out/f"guide-{slug}.html").read_text())
+            self.assertTrue(Path(__file__).with_name("methodology.html").is_file())
 
     def test_duplicate_slug_rejected(self):
         with tempfile.TemporaryDirectory() as d:

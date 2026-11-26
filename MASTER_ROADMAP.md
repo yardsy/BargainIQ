@@ -11,11 +11,12 @@ Status: [x] merged implementation (not necessarily verified production); [ ] out
 - [ ] Mobile and desktop regression testing
 
 ## 2. Content and website quality
-- [ ] Buying guide library release (PR 7; six guides written)
-- [ ] 30 substantial individual original articles (internal target)
-- [ ] Category landing pages and genuine product comparisons/listings
+- [x] Buying guide library release (PR 7 merged; PR 8 merged with 12 individual pages)
+- [ ] 30 individual original articles (30 written on editorial-categories; pending release)
+- [ ] Six category landing pages (implemented on editorial-categories; pending release)
+- [ ] Genuine product comparisons/listings
 - [ ] Original or authorised imagery and educational diagrams
-- [ ] Editorial methodology, homepage content, consolidate empty sections
+- [ ] Editorial methodology (written; pending release), homepage content, consolidate empty sections
 
 ## 3. SEO, analytics and acquisition
 - [x] Initial SEO metadata and private-beta indexing safeguards
@@ -50,4 +51,4 @@ Status: [x] merged implementation (not necessarily verified production); [ ] out
 - [ ] Commission Factory reapplication, retailer/category expansion and profitable growth
 
 ## Immediate sequence
-Validate PR 6 and PR 7; integrate V12 only after tests. Build useful original editorial pages and imagery while awaiting approved inventory. Establish genuine analytics and public content readiness before reapplication. Prioritise release over new disconnected modules.
+Validate PR 6; PRs 7 and 8 merged after successful tests. Validate 30-guide category release; integrate V12 only after tests. Build useful original editorial pages and imagery while awaiting approved inventory. Establish genuine analytics and public content readiness before reapplication. Prioritise release over new disconnected modules.
