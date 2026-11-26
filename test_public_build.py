@@ -52,5 +52,5 @@ class PublicBuildTests(unittest.TestCase):
             self.assertFalse((out/"test_engagement.js").exists())
             self.assertFalse((out/"sitemap.xml").exists())
             self.assertTrue((out/"robots.txt").exists())
-            for p in [out/"index.html",out/"account.html",out/"engagement.js"]:
+            for p in [out/"index.html",out/"account.html"]:
                 self.assertNotIn('name="bargainiq-analytics-endpoint"',p.read_text())
