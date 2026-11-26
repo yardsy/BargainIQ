@@ -70,3 +70,27 @@ def newly_matched(current,previous_keys):
     """Return stable offer identities not present in the previous successful check."""
     old=set(previous_keys)
     return sorted(set(current)-old)
+
+
+def plan_shopping_alerts(subscription,rows,delivered_keys,now=None):
+    """Return candidates only; caller persists keys after successful delivery.
+
+    Invoke per subscription with its own delivery ledger. No account access,
+    persistence or sending occurs here. Explicit opt-in is required.
+    """
+    if not isinstance(subscription,dict) or subscription.get('enabled') is not True:
+        return []
+    if subscription.get('email_opt_in') is not True:
+        return []
+    now=now or datetime.now(timezone.utc)
+    delivered=set(delivered_keys)
+    matches={}
+    for row in rows:
+        if not shopping_matches(subscription.get('criteria'),row,now):
+            continue
+        key=offer_key(row)
+        if key in delivered:
+            continue
+        if key not in matches or timestamp(row['observed_at'])>timestamp(matches[key]['observed_at']):
+            matches[key]=row
+    return [{'offer_key':key,'offer':matches[key]} for key in sorted(matches)]
