@@ -52,5 +52,8 @@ class PublicBuildTests(unittest.TestCase):
             self.assertFalse((out/"test_engagement.js").exists())
             self.assertFalse((out/"sitemap.xml").exists())
             self.assertTrue((out/"robots.txt").exists())
+            headers=(out/"_headers").read_text()
+            for header in ("X-Robots-Tag: noindex, nofollow","X-Frame-Options: DENY","Referrer-Policy: no-referrer","X-Content-Type-Options: nosniff"):
+                self.assertIn(header,headers)
             for p in [out/"index.html",out/"account.html"]:
                 self.assertNotIn('name="bargainiq-analytics-endpoint"',p.read_text())
