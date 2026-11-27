@@ -222,6 +222,13 @@ def main():
         page.locator("#targetForm button").click()
         expect(page.locator("#targetItems")).to_contain_text("Target reached")
         assert len(saved)==1 and len(targets)==1
+        assert saved[0]["item_type"]=="product" and targets[0]["item_type"]=="product"
+        expect(page.locator('#watch option[value="vehicle"], #watch option:text-is("vehicle"), #targetForm option[value="vehicle"], #publishDeal option[value="vehicle"], #submit option:text-is("dealer")')).to_have_count(0)
+        targets.append(dict(id="legacy-target",item_type="vehicle",item_key="legacy-car",target_price=30000,enabled=False))
+        page.locator("#refreshTargetsButton").click()
+        expect(page.locator("#targetItems")).to_contain_text("Legacy vehicle target retained")
+        expect(page.locator('#targetItems a[href="https://carradar.pages.dev/"]')).to_be_visible()
+        targets.pop()
         page.evaluate("""localStorage.setItem('bargainiq-saved-searches-v1',JSON.stringify([{name:'Account lamp',fields:{search:'Test lamp',specBudget:'115',specBasis:'delivered',retailCategory:'Lighting'},clearance:false}]))""")
         page.locator('[data-view="searchPanel"]').click()
         expect(page.locator("#accountSearches")).to_contain_text("No account shopping requests")
