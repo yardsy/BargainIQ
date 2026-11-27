@@ -20,8 +20,8 @@ class LaunchSEOTests(unittest.TestCase):
             dest=root/"candidate.xml"
             write_launch_sitemap(out,dest,"https://bargainiq.netlify.app")
             urls=[e.text for e in ET.parse(dest).getroot().iter() if e.tag.endswith("}loc")]
-            self.assertEqual(len(urls),40)
-            self.assertEqual(len(set(urls)),40)
+            self.assertEqual(len(urls),34)
+            self.assertEqual(len(set(urls)),34)
             self.assertFalse(any("account.html" in u for u in urls))
             with self.assertRaises(ValueError):
                 write_launch_sitemap(out,dest,"http://example.com")

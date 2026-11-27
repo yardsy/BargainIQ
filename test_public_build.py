@@ -36,8 +36,8 @@ class PublicBuildTests(unittest.TestCase):
                 parser=Page()
                 parser.feed(p.read_text(encoding="utf-8"))
                 pages[p.name]=parser
-            self.assertEqual(len(list(out.glob("guide-*.html"))),30)
-            self.assertEqual(len(list(out.glob("category-*.html"))),6)
+            self.assertEqual(len(list(out.glob("guide-*.html"))),25)
+            self.assertEqual(len(list(out.glob("category-*.html"))),5)
             for name,page in pages.items():
                 for link in page.links:
                     u=urlsplit(link)
@@ -47,6 +47,9 @@ class PublicBuildTests(unittest.TestCase):
                     self.assertTrue((out/target).is_file(),f"{name}: broken link {link}")
                     if u.fragment and target in pages:
                         self.assertIn(unquote(u.fragment),pages[target].ids,f"{name}: broken fragment {link}")
+            self.assertFalse((out/"stock.json").exists())
+            self.assertFalse((out/"history.json").exists())
+            self.assertFalse((out/"category-automotive.html").exists())
             self.assertFalse(list(out.glob("*.py")))
             self.assertFalse(list(out.glob("*.md")))
             self.assertFalse((out/"test_engagement.js").exists())
