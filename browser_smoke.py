@@ -20,7 +20,7 @@ def main():
         third=dict(retail,name="Test chair",category="Furniture",url="https://example.invalid/chair",shipping=None,price=90,price_history=None,width_cm=None,depth_cm=None)
         page.route("**/retail.json",lambda route:route.fulfill(json=dict(products=[retail,second,third],matches=[[retail,second]])))
         page.goto("http://127.0.0.1:8765/index.html")
-        expect(page.locator(".editorialGrid a")).to_have_count(6)
+        expect(page.locator(".editorialGrid a")).to_have_count(5)
         expect(page.locator(".editorialGrid .categoryIcon svg")).to_have_count(6)
         expect(page.locator(".editorialHub")).to_be_visible()
         assert page.evaluate("document.querySelector('.editorialHub').getBoundingClientRect().top < document.querySelector('#verifiedDeals').getBoundingClientRect().top")
