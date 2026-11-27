@@ -8,7 +8,6 @@ DESCRIPTIONS={
  "televisions":"Compare television sizes, screen technology, gaming inputs and installation.",
  "appliances":"Compare appliance dimensions, energy consumption and total ownership costs.",
  "gaming":"Choose a gaming monitor based on resolution, hardware and measured performance.",
- "vehicles":"Compare Australian new-car quotes, drive-away prices and delivery conditions.",
  "clearance":"Evaluate clearance prices, product condition, delivery and warranty.",
  "tv-units":"Find shallow TV units under 40 cm deep: check console shelf dimensions, ventilation, cable access and delivered cost.",
  "coffee-tables":"Footprint, height, finish, cleaning instructions, stability and freight.",
@@ -26,10 +25,6 @@ DESCRIPTIONS={
  "laptops":"Applications, RAM, storage, display, battery tests, ports and warranty.",
  "gaming-pcs":"Exact parts, game benchmarks, power supply, cooling, upgrades and total cost.",
  "routers":"Connection compatibility, coverage, ports, update policy and total hardware cost.",
- "used-cars":"Variant, kilometres, history, inspection, registration and total cost.",
- "demo-cars":"Registration date, kilometres, condition, warranty, new-car alternative and price.",
- "car-finance":"Cash price, loan amount, term, fees, balloon and total payable.",
- "car-running-costs":"Annual distance, energy, insurance, registration, servicing, tyres and depreciation scenarios.",
  "delivery":"Compare delivered furniture prices in Australia, including postcode-specific freight, installation and return terms.",
  "price-history":"Exact product, retailer, observation dates, delivery, target price and current availability.",
  "refurbished":"Condition, testing, accessories, battery health where relevant, warranty and delivered cost.",
@@ -79,17 +74,6 @@ CATEGORIES={
       "laptops",
       "gaming-pcs",
       "routers"
-    ]
-  ],
-  "automotive": [
-    "Automotive",
-    "Compare vehicle quotes, condition, finance costs and ownership expenses.",
-    [
-      "vehicles",
-      "used-cars",
-      "demo-cars",
-      "car-finance",
-      "car-running-costs"
     ]
   ],
   "shopping": [
