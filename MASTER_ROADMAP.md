@@ -1,70 +1,35 @@
-# BargainIQ master roadmap
-Agreed 26 November 2026. Supersedes previous roadmaps. Routine development authorised; no additional expenditure without owner approval.
-Status: [x] merged implementation (not necessarily verified production); [ ] outstanding. Mark fully released only after relevant tests and production verification. Record evidence and blockers. No fabricated inventory, reviews, imagery claims or traffic.
+# BargainIQ master roadmap — retail only
+Updated 27 November 2026. Routine development authorised; no expenditure without owner approval. Merged code is not proof of production deployment. Preserve verified history and customer records. Never fabricate inventory, discounts, reviews or traffic.
 
-## 1. Complete existing development
-- [x] Website design/navigation, retail and vehicle comparison frameworks, resale calculator
-- [x] Accounts, watchlists, price history, specification filters, natural-language requests
-- [x] Account-synchronised searches and cross-device tests (PR 10 passed and merged; production and real-account isolation verification pending)
-- [x] Multi-retailer processing and scheduled preview validation (V12, PR 11 passed and merged)
-- [ ] Activate authorised inventory feeds and publication
-- [x] Recover and merge V11/V12 releases (PRs 10–11)
-- [x] Automated validation against generated public build (PR 14)
-- [ ] Independently verify production deployment
-- [x] Existing mocked browser smoke tests against public build (PR 14)
-- [ ] Complete production mobile, desktop and accessibility audit
+## P0 — customer experience and release integrity
+- [x] Independent retail site; automotive moved to CarRadar (PR 28).
+- [x] Retail account interface and legacy automotive record preservation (PR 29); underlying database grants unchanged.
+- [x] Clean public build, 25 retail guides, five categories, requirements-first search, matching cards and account-synchronised saved requests.
+- [x] Personal discovery criteria displayed (PR 30).
+- [ ] Balanced retail homepage and responsive navigation (current layout branch).
+- [ ] Independently verify live deployment, authentication, mobile/desktop accessibility and actual user journeys.
+- [ ] Resolve open PR 24 stale-price candidate issue before enabling alerts; reconcile overlapping PR 26 with current main.
+- [ ] Remove legacy automotive source files only after dependency audit; retain historical records safely. CarRadar referral link remains.
 
-## 2. Content and website quality
-- [x] Buying guide library release (PR 7 merged; PR 8 merged with 12 individual pages)
-- [x] 30 individual original articles (PR 9 passed and merged)
-- [x] Six category landing pages (PR 9 passed and merged)
-- [x] Initial three manufacturer-linked editorial comparisons (PR 15)
-- [ ] Expand verified comparisons and authorised live product listings
-- [x] Initial four original educational diagrams (PR 12 merged)
-- [ ] Expand original or authorised product imagery
-- [x] Editorial methodology (PR 9 passed and merged)
-- [x] Homepage editorial navigation (PR 12 merged)
-- [x] Actionable empty inventory sections, simplified homepage, category browsing, recorded price drops and local saved-search recommendations (PR 20 merged; production verification pending)
+## P1 — product discovery and supply
+- [x] Retail feed validation, matching by identifiers/variant/condition, recorded price history, approved-source preview processing.
+- [ ] Authorised retailer or affiliate feed access; Awin enquiry sent, Commission Factory declined early application. No approved live feed established.
+- [ ] Establish a useful first category (furniture/homewares preferred subject to feed access), confirm delivery/stock/variant accuracy and publication rights.
+- [ ] Automated approved-feed retrieval, validation, freshness/withdrawal handling, monitored publication.
+- [ ] Personal shopping dashboard: saved requirements, matching products, delivered prices, recorded drops, cross-device recommendations.
+- [ ] Repair and validate opt-in alert candidate logic, then notification preferences, deduplication, delivery and unsubscribe. No active automated alerts yet.
 
-## 3. SEO, analytics and acquisition
-- [x] Initial SEO metadata and private-beta indexing safeguards
-- [x] Aggregate analytics processing and admin report import (PR 11 merged)
-- [x] Live aggregate analytics database provisioned and verified, administrator read policy applied
-- [x] Analytics release PR 21 passed validation and merged; dashboard integration and synthetic browser tests
-- [ ] Verify production administrator report, connect protected collection endpoint and schedule retention
-- [x] Individual article SEO (PR 9), browser retailer click hooks and privacy tests (PR 13), initial keyword and competitor research (PR 15)
-- [ ] Activate and verify retailer click reporting and refine search strategy using actual traffic
-- [x] Internal links, beta robots policy and offline sitemap generation (PR 12 merged)
-- [ ] Publish sitemap after launch checks
-- [ ] Search Console and Bing Webmaster Tools verification
-- [ ] Enable public indexing only after launch checks
-- [ ] Organic social strategy, performance optimisation, final brand identity
+## P2 — acquisition and trust
+- [x] Editorial methodology, original diagrams, beta noindex, offline sitemap, aggregate analytics infrastructure and privacy controls.
+- [ ] Production security review, account removal, protected analytics endpoint, abuse controls, retention and real-admin verification. No analytics collection activated.
+- [ ] Verify useful inventory and customer experience before enabling indexing, sitemap and search console.
+- [ ] Expand independently useful buying guides and original/authorised images, test organic acquisition with real traffic.
 
-## 4. Partnerships and inventory
-- [x] Initial 14 outreach attempts; affiliate shortlist and onboarding documentation developed
-- [ ] Vyro (in progress), Dealer Studio (pending), direct retail partners
-- [ ] Schots follow-up (drafted; original email bounced)
-- [ ] Alternative affiliate networks; Commission Factory reapplication after content and genuine traffic
-- [ ] Authorised API/feed access, retrieval, validated publication and accuracy monitoring
+## P3 — commercial validation
+- [ ] Approved affiliate tracking and disclosures; measure qualified clicks and conversion.
+- [ ] Validate repeat use, first revenue, unit economics and retailer demand before paid expansion.
+- [ ] Sponsored placement disclosures, retailer reporting and commercial packages only after demonstrated demand.
+- [ ] Scale categories and partnerships based on verified performance.
 
-## 5. Advanced customer functionality
-- [x] Price-target and shopping-request matching engine and unit tests (PR 11 merged)
-- [ ] Connect matching to authorised inventory, saved preferences and notification delivery
-- [ ] Notification preferences, automatic email delivery and matching product alerts
-- [ ] Customer feedback
-
-## 6. Monetisation
-- [ ] Integrate approved affiliate links, attribution and disclosures
-- [ ] Sponsored placements, retailer landing page and advertising packages
-- [ ] Retailer performance and revenue reporting
-- [ ] First revenue
-
-## 7. Launch and growth
-- [x] Live database RLS audit: 13/13 public tables protected; anonymous customer data access denied; controlled two-account saved-search, watchlist, price-target, profile and submission isolation tests passed 26 November 2026 (transaction rollback)
-- [x] Local browser data clearing controls (PR 18); five customer-table deletion cascade checks passed in rollback fixture.
-- [ ] Remaining security/privacy review: narrower grants, leaked-password protection, account removal and production verification
-- [ ] Public launch, customer acquisition, conversion optimisation
-- [ ] Commission Factory reapplication, retailer/category expansion and profitable growth
-
-## Immediate sequence
-PRs 7, 8, 9 and 10 passed tests and merged. PR 11 (V12) passed validation and merged. PR 12 passed validation and merged homepage, original diagrams and beta SEO preparation. PRs 13–15 passed validation and merged: disabled analytics client, public build tests, three editorial comparisons and initial search research. PRs 16–19 passed and merged: expanded requirements-first guides, database isolation evidence, local privacy controls and Cloudflare migration configuration. Cloudflare primary URL is https://bargainiq.pages.dev/; owner confirmed Supabase redirect settings, live deployment verification pending. PR 20 passed automated validation and merged (12a21faa992b22c92c36970c023642af8c1a872b). Analytics database migrations engagement_daily_aggregate_storage and engagement_admin_read applied 26 November 2026. Rollback tests passed for counting, 5,000 accepted events/day cap, 90-day retention and non-admin isolation. Production tables verified empty before collection. Administrator reporting client and synthetic browser tests passed in PR 21 and merged (c7621119bd7c758c5056e66fe43d015284c35894). V13 prioritises discovery-first homepage, consistent product cards, mobile and keyboard accessibility, simplified account journeys and production visual verification. Public endpoint, hosting-level abuse controls, scheduled retention and real administrator verification remain activation gates. Public launch requires visual and accessibility audit across mobile, tablet and desktop, real customer journey testing, and verified production authentication. Automatic discovery is a core requirement; cross-device recommendations, authorised live feed refresh and notifications remain pending. Verify live deployment: direct retrieval of production homepage, router guide and furniture category unsuccessful on 26 November 2026; not evidence of downtime. Build useful original editorial pages and imagery while awaiting approved inventory. Establish genuine analytics and public content readiness before reapplication. Prioritise release over new disconnected modules.
+## Operating rules
+Each release: scoped branch, regression tests, merge only after green checks, verify production separately. No paid subscriptions or domains without approval. Separate CarRadar development in yardsy/CarRadar. Historical roadmap retained in Git history; prior DB isolation audit passed rollback fixtures on 26 November, but production auth and data permissions need ongoing verification.

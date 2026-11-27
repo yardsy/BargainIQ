@@ -27,6 +27,11 @@ def main():
         for width in (320,390,768,1280):
             page.set_viewport_size({"width":width,"height":900})
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), f"Horizontal overflow at {width}px"
+            assert page.locator(".featureNav button").count()==3
+            if width==1280:
+                assert page.evaluate("""() => {const a=[...document.querySelectorAll(".featureNav button")].map(x=>x.getBoundingClientRect());return a.every(x=>Math.abs(x.width-a[0].width)<1&&Math.abs(x.top-a[0].top)<1)}""")
+            if width==390:
+                assert page.evaluate("""() => {const a=[...document.querySelectorAll(".featureNav button")].map(x=>x.getBoundingClientRect());return a.every(x=>Math.abs(x.width-a[0].width)<1)&&a[0].top<a[1].top&&a[1].top<a[2].top}""")
         page.set_viewport_size({"width":390,"height":844})
         expect(page.locator("#retailResults")).to_contain_text("Test lamp")
         expect(page.locator("#browseCategories")).to_contain_text("Lighting (2 listings)")
