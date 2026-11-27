@@ -21,9 +21,9 @@ class EditorialTests(unittest.TestCase):
                 for link in re.findall(r'href="(guide-[a-z0-9-]+\.html)"',html):
                     self.assertTrue((out/link).is_file(),link)
             self.assertNotIn("Shopping checklist:",hub)
-            self.assertEqual(len(DESCRIPTIONS),30)
-            self.assertEqual(len(CATEGORIES),6)
-            self.assertEqual(len(list(out.glob("category-*.html"))),6)
+            self.assertEqual(len(DESCRIPTIONS),25)
+            self.assertEqual(len(CATEGORIES),5)
+            self.assertEqual(len(list(out.glob("category-*.html"))),5)
             for key,(title,description,slugs) in CATEGORIES.items():
                 page=out/f"category-{key}.html"
                 html=page.read_text()
